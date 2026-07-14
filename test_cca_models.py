@@ -91,6 +91,23 @@ class TestCCAModels(unittest.TestCase):
         m = model("cca1")
         self.assertIsInstance(m, CCA)
 
+    def test_fit_pca(self):
+        # create two trials with known variances per channel so PCA orders them
+        rng = np.random.RandomState(1)
+        vars = np.array([4.0, 1.0, 0.25])
+        t1 = rng.randn(100, 3) * np.sqrt(vars)
+        t2 = rng.randn(120, 3) * np.sqrt(vars)
+        P = Model._fit_pca([t1, t2], 2)
+        # shape should be (n_channels, k)
+        self.assertEqual(P.shape, (3, 2))
+        # columns should be orthonormal
+        self.assertTrue(np.allclose(P.T @ P, np.eye(2), atol=1e-6))
+        # projected variances should be descending
+        X = np.vstack([t1, t2])
+        proj = X @ P
+        var_proj = np.var(proj, axis=0)
+        self.assertGreater(var_proj[0], var_proj[1])
+
 
 if __name__ == "__main__":
     unittest.main()
