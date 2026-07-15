@@ -348,10 +348,10 @@ class CCA(Model):
         Wy = self._whitener(Cyy, self.stim_keep, self.rcond)
         U, s, Vt = np.linalg.svd(Wx.T @ Cxy @ Wy, full_matrices=False)
         k = self.n_components or len(s)
+        self.singular_values_ = s[:k]
         self.x_weights_ = Wx @ U[:, :k]
         self.y_weights_ = Wy @ Vt[:k].T
         self.canonical_correlations_ = s[:k]
-        return self
 
     def score(self, eeg: Union[NDArray[Any], Sequence[NDArray[Any]]], env: Union[NDArray[Any], Sequence[NDArray[Any]]]) -> NDArray[Any]:
         """Compute per-component correlations on new data using fitted weights.
@@ -403,7 +403,6 @@ class Regression(Model):
         Cxx, _Cyy, Cxy, self.x_mean_, self.y_mean_ = self._covariances(X, Y)
         Wx = self._whitener(Cxx, keep, self.rcond)
         self.coef_ = (Wx @ Wx.T) @ Cxy
-        return self
 
     def score(self, eeg: Union[NDArray[Any], Sequence[NDArray[Any]]], env: Union[NDArray[Any], Sequence[NDArray[Any]]]) -> NDArray[Any]:
         """Score predictions as per-output Pearson correlations.
