@@ -1,0 +1,40 @@
+NoiseTools vs python  --  eeg
+29-Apr-2023, MATLAB 25.2.0.3150157, 2026-08-28
+
+1 matrix set(s): eeg 2500x128
+cond(X'X) 2.2e+05 .. 2.2e+05
+
+routine             worst         max|d|        MSE       RMSE    rel.Fro         corr   angle deg
+--------------------------------------------------------------------------------------------------
+nt_demean           eeg         0.00e+00   0.00e+00   0.00e+00   0.00e+00  1.000000000           -
+nt_normcol          eeg         4.44e-16   9.00e-33   9.49e-17   9.49e-17  1.000000000           -
+nt_cov raw          eeg         0.00e+00   0.00e+00   0.00e+00   0.00e+00  1.000000000           -
+nt_cov demeaned     eeg         2.00e-05   2.92e-12   1.71e-06   1.67e-15  1.000000000           -
+nt_pcarot evals     eeg         2.67e-05   1.60e-11   4.00e-06   3.46e-16  1.000000000           -
+nt_pcarot evecs     eeg                -          -          -          -            -     1.7e-13
+nt_pca              eeg         1.06e-08   2.98e-19   5.46e-10   4.88e-13  1.000000000           -
+nt_multishift       eeg         0.00e+00   0.00e+00   0.00e+00   0.00e+00  1.000000000           -
+nt_smooth           eeg         6.40e-10   5.42e-21   7.37e-11   1.69e-16  1.000000000           -
+nt_multismooth      eeg         6.40e-10   6.00e-21   7.75e-11   1.78e-16  1.000000000           -
+nt_detrend          eeg         3.57e-10   1.51e-21   3.88e-11   1.64e-13  1.000000000           -
+nt_star             eeg         3.05e-09   1.87e-22   1.37e-11   3.14e-17  1.000000000           -
+nt_regcov           eeg         3.61e-15   6.64e-31   8.15e-16   1.31e-11  1.000000000           -
+nt_regcov pred      eeg         7.40e-13   3.02e-26   1.74e-13   4.67e-12  1.000000000           -
+nt_cca R            eeg         1.89e-11   2.00e-22   1.42e-11   2.77e-11  1.000000000           -
+nt_cca vs shift     eeg         1.91e-11   1.97e-22   1.40e-11   2.76e-11  1.000000000           -
+nt_cca A            eeg                -          -          -          -            -     1.7e-09
+nt_cca B            eeg                -          -          -          -            -     7.2e-14
+^ vs robust_detrend eeg         2.39e+02   8.37e+01   9.15e+00   3.86e-02  0.999276437           -
+^ vs _pinv          eeg         3.61e-15   6.64e-31   8.15e-16   1.31e-11  1.000000000           -
+--------------------------------------------------------------------------------------------------
+18/18 comparisons on non-singular inputs below 1e-08
+
+notes
+  eigenvectors and cca weights are only defined up to sign, and up to rotation
+    when eigenvalues tie, so those rows give the principal angle between the
+    subspaces and leave the elementwise columns blank
+  nt_smooth ramps in over the first T samples (divides by T, not by i);
+    the steady state is quoted, which agrees to ~1e-13
+  nt_regcov inverts every eigenvalue, so a singular cyy blows up on both sides;
+    that is the algorithm, not the port. singular cases are excluded above
+  paper_loo.robust_detrend is not a port of nt_detrend -- see the last two rows
