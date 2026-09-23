@@ -10,14 +10,26 @@ including forward (predict EEG from audio) and backward (predict audio from EEG)
 But the paper by de Cheveigne shows that we get the best model if we rotate
 the audio and the EEG signals, each in their own canonical directions, to 
 find a new subspace that maximizes the resulting correlation.
-CCA is not limited to brain data, and can be used to find a match between 
-any two related data [for example Slaney/Covell]
 
 <img src="images/CCA Overview.png" alt="Overview if CCA and Alternatives" 
   width="300" height="200">
 
+CCA is not limited to brain data, and can be used to find a match between 
+any two related data [for example 
+[FaceSync](https://papers.nips.cc/paper/2000/hash/9f6992966d4c363ea0162a056cb45fe5-Abstract.html)]
+
+# Examples
+Need to add code samples here....
+
+See this Google colab for examples: 
+[Telluride 2026 CCA Demo](https://colab.research.google.com/drive/1N1GSTs8QyAsurOZKiUbKH-MrDrMzxppE?usp=sharing) 
 
 # References
-de Cheveigne
-
-Slaney, Covell. FaceSync
+Alain de Cheveigné, Daniel D.E. Wong, Giovanni M. Di Liberto, Jens Hjortkjær, Malcolm Slaney, Edmund Lalor,
+Decoding the auditory brain with canonical component analysis,
+NeuroImage,
+Volume 172,
+2018,
+Pages 206-216,
+ISSN 1053-8119,
+[Link to Paper](https://doi.org/10.1016/j.neuroimage.2018.01.033).
